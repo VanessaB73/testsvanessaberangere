@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests d'Orientation - Vanessa Bérangère</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-violet: #8b5cf6;
+            --primary-turquoise: #31f5e5;
+            --secondary: #ec4899;
+            --accent: #06d6a0;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --green: #10b981;
+            --blue: #3b82f6;
+            --orange: #f59e0b;
+            --red: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: var(--gray-900);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* STYLES DE LA PAGE D'ACCUEIL */
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-turquoise), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            color: var(--gray-600);
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 32px;
+        }
+
+        .date-info {
+            background: linear-gradient(135deg, rgba(49, 245, 229, 0.1), rgba(6, 214, 160, 0.1));
+            border: 2px solid rgba(49, 245, 229, 0.2);
+            border-radius: 16px;
+            padding: 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+
+        .tests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .test-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .test-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+
+        .test-card.bigfive::before {
+            background: linear-gradient(90deg, var(--primary-violet), var(--secondary));
+        }
+
+        .test-card.riasec::before {
+            background: linear-gradient(90deg, var(--primary-turquoise), var(--accent));
+        }
+
+        .test-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .test-card h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .test-card.bigfive h2 {
+            background: linear-gradient(135deg, var(--primary-violet), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .test-card.riasec h2 {
+            background: linear-gradient(135deg, var(--primary-turquoise), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* STYLES POUR LES TESTS */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 48px 40px;
+            margin-bottom: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            min-height: 52px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-violet), var(--secondary));
+            color: white;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-turquoise {
+            background: linear-gradient(135deg, var(--primary-turquoise), var(--accent));
+            color: white;
+            box-shadow: 0 8px 25px rgba(49, 245, 229, 0.3);
+        }
+
+        .btn-turquoise:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(49, 245, 229, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--gray-500), var(--gray-600));
+            color: white;
+            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.3);
+        }
+
+        .btn-home {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--gray-700);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert.turquoise {
+            background: linear-gradient(135deg, rgba(49, 245, 229, 0.1), rgba(6, 214, 160, 0.1));
+            border: 2px solid rgba(49, 245, 229, 0.2);
+        }
+
+        .alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-violet), var(--secondary));
+        }
+
+        .alert.turquoise::before {
+            background: linear-gradient(90deg, var(--primary-turquoise), var(--accent));
+        }
+
+        .completion-card {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-violet), var(--secondary));
+            color: white;
+            border-radius: 24px;
+            padding: 64px 40px;
+            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.3);
+        }
+
+        .completion-card.turquoise {
+            background: linear-gradient(135deg, var(--primary-turquoise), var(--accent));
+            box-shadow: 0 25px 50px rgba(49, 245, 229, 0.3);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Navigation et autres styles partagés */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 15px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-violet);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+        }
+
+        .question-text {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--gray-900);
+            letter-spacing: -0.01em;
+        }
+
+        .progress-container {
+            background: rgba(229, 231, 235, 0.8);
+            height: 8px;
+            border-radius: 8px;
+            margin-bottom: 32px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-violet), var(--secondary));
+            border-radius: 8px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-bar.turquoise {
+            background: linear-gradient(90deg, var(--primary-turquoise), var(--accent));
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border: 2px solid var(--red);
+            color: #991b1b;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-top: 16px;
+            display: none;
+            font-weight: 500;
+        }
+
+        /* Styles spécifiques Big Five */
+        .answers-grid {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .answer-option {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .answer-option:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+        }
+
+        .rating-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .rating-btn {
+            width: 44px;
+            height: 44px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            color: var(--gray-700);
+        }
+
+        .rating-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-violet);
+        }
+
+        .rating-btn.selected {
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-color: transparent;
+        }
+
+        .rating-btn.btn-1.selected {
+            background: linear-gradient(135deg, var(--green), #059669);
+        }
+
+        .rating-btn.btn-2.selected {
+            background: linear-gradient(135deg, var(--blue), #2563eb);
+        }
+
+        .rating-btn.btn-3.selected {
+            background: linear-gradient(135deg, var(--orange), #d97706);
+        }
+
+        .rating-btn.btn-4.selected {
+            background: linear-gradient(135deg, var(--red), #dc2626);
+        }
+
+        /* Styles spécifiques RIASEC */
+        .activities-grid {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .activity-option {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            border: 2px solid rgba(49, 245, 229, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .activity-option:hover {
+            border-color: rgba(49, 245, 229, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(49, 245, 229, 0.2);
+        }
+
+        .activity-option.selected-plus {
+            border-color: var(--green);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+        }
+
+        .activity-option.selected-minus {
+            border-color: var(--red);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+        }
+
+        .rating-btn.plus-btn.selected {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .rating-btn.minus-btn.selected {
+            background: var(--red);
+            border-color: var(--red);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .header {
+                padding: 32px 24px;
+            }
+            
+            .header h1 {
+                font-size: 36px;
+            }
+            
+            .card {
+                padding: 32px 24px;
+            }
+            
+            .tests-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .navigation {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- PAGE D'ACCUEIL -->
+        <div id="home-page" class="page active">
+            <div class="header">
+                <h1>Découvre Ton Profil</h1>
+                <div class="subtitle">Tests de personnalité et d'orientation professionnelle</div>
+                <div class="date-info">
+                    <strong>Vanessa Bérangère</strong> - Conseillère en orientation<br>
+                    Tests disponibles depuis le <span id="current-date">18 juillet 2025</span>
+                </div>
+            </div>
+
+            <div class="tests-grid">
+                <div class="test-card bigfive" onclick="startBigFive()">
+                    <h2>🧠 Test de Personnalité</h2>
+                    <p style="color: var(--gray-600); font-size: 16px; margin-bottom: 24px;">
+                        Découvre tes 5 grands traits de personnalité avec le modèle scientifique Big Five. 
+                        15 questions pour mieux te connaître.
+                    </p>
+                    <div style="display: flex; align-items: center; gap: 12px; color: var(--gray-500); font-size: 14px; margin-bottom: 24px;">
+                        <span>⏱️ 7-10 minutes</span>
+                        <span>•</span>
+                        <span>📊 15 questions</span>
+                        <span>•</span>
+                        <span>🎯 Analyse comportementale</span>
+                    </div>
+                    <div style="padding: 16px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1)); border-radius: 12px; border: 1px solid rgba(139, 92, 246, 0.2);">
+                        <strong style="color: var(--primary-violet);">Passer le test →</strong>
+                    </div>
+                </div>
+
+                <div class="test-card riasec" onclick="startRiasec()">
+                    <h2>🎯 Test d'Orientation</h2>
+                    <p style="color: var(--gray-600); font-size: 16px; margin-bottom: 24px;">
+                        Identifie tes centres d'intérêts professionnels avec le modèle RIASEC. 
+                        40 questions pour découvrir ton orientation idéale.
+                    </p>
+                    <div style="display: flex; align-items: center; gap: 12px; color: var(--gray-500); font-size: 14px; margin-bottom: 24px;">
+                        <span>⏱️ 12-15 minutes</span>
+                        <span>•</span>
+                        <span>📊 40 questions</span>
+                        <span>•</span>
+                        <span>🎯 Orientation métiers</span>
+                    </div>
+                    <div style="padding: 16px; background: linear-gradient(135deg, rgba(49, 245, 229, 0.1), rgba(6, 214, 160, 0.1)); border-radius: 12px; border: 1px solid rgba(49, 245, 229, 0.2);">
+                        <strong style="color: var(--primary-turquoise);">Passer le test →</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE BIG FIVE -->
+        <div id="bigfive-page" class="page">
+            <!-- Contenu du test Big Five sera injecté ici -->
+        </div>
+
+        <!-- PAGE RIASEC -->
+        <div id="riasec-page" class="page">
+            <!-- Contenu du test RIASEC sera injecté ici -->
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let currentTest = '';
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let startTime = Date.now();
+        let userInfo = {};
+
+        // Gestion des pages
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function goHome() {
+            showPage('home-page');
+            currentTest = '';
+            currentQuestion = 0;
+            userAnswers = [];
+        }
+
+        // Initialiser la date
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            document.getElementById('current-date').textContent = today.toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        });
+
+        // FONCTIONS BIG FIVE
+        function startBigFive() {
+            currentTest = 'bigfive';
+            showPage('bigfive-page');
+            
+            document.getElementById('bigfive-page').innerHTML = `
+                <div class="card">
+                    <div style="text-align: center; margin-bottom: 48px;">
+                        <h1 style="font-size: 42px; font-weight: 700; background: linear-gradient(135deg, var(--primary-violet), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px;">Test de Personnalité</h1>
+                        <div style="color: var(--gray-600); font-size: 20px; margin-bottom: 32px;">Découvre ton profil unique et tes orientations professionnelles</div>
+                    </div>
+                    
+                    <div class="alert">
+                        <div style="font-weight: 600; font-size: 18px; color: var(--gray-900); margin-bottom: 16px;">À lire attentivement avant de commencer</div>
+                        <p><strong>Hello !</strong> Ce test de personnalité, tu le fais d'abord pour <strong>toi</strong>, pour que je comprenne vraiment qui tu es et comment tu fonctionnes.</p>
+                        <br>
+                        <p>Réponds le plus honnêtement possible. <strong>Il n'y a pas de bonnes ou mauvaises réponses</strong>, juste ta façon d'être !</p>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 32px;">
+                        <h2 style="color: var(--gray-900); margin-bottom: 24px; font-size: 24px;">Tes informations</h2>
+                        <div style="max-width: 400px; margin: 0 auto;">
+                            <div class="form-group">
+                                <label for="bf-firstName" class="form-label">Prénom <span style="color: var(--red);">*</span></label>
+                                <input type="text" id="bf-firstName" class="form-input" placeholder="Ton prénom" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bf-lastName" class="form-label">Nom <span style="color: var(--red);">*</span></label>
+                                <input type="text" id="bf-lastName" class="form-input" placeholder="Ton nom de famille" required>
+                            </div>
+                            <div class="error-message" id="bf-info-error">
+                                Merci de remplir ton prénom et ton nom !
+                            </div>
+                            <div style="display: flex; gap: 16px; justify-content: center; margin-top: 24px;">
+                                <button class="btn btn-home" onclick="goHome()">← Retour</button>
+                                <button class="btn btn-primary" onclick="startBigFiveTest()">Commencer le test</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function startBigFiveTest() {
+            const firstName = document.getElementById('bf-firstName').value.trim();
+            const lastName = document.getElementById('bf-lastName').value.trim();
+            
+            if (!firstName || !lastName) {
+                document.getElementById('bf-info-error').style.display = 'block';
+                return;
+            }
+            
+            userInfo = { firstName, lastName };
+            startTime = Date.now();
+            currentQuestion = 0;
+            userAnswers = new Array(bigFiveQuestions.length).fill(null);
+            
+            showBigFiveQuestion();
+        }
+
+        function showBigFiveQuestion() {
+            const question = bigFiveQuestions[currentQuestion];
+            
+            document.getElementById('bigfive-page').innerHTML = `
+                <div class="card">
+                    <div style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--primary-violet), var(--secondary)); color: white; padding: 12px 24px; border-radius: 25px; font-weight: 600; font-size: 14px; margin-bottom: 24px;">
+                        Partie ${question.part} sur 3
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${(currentQuestion / bigFiveQuestions.length) * 100}%"></div>
+                    </div>
+                    
+                    <div style="text-align: center; color: var(--gray-600); font-weight: 500; margin-bottom: 24px;">
+                        Question ${currentQuestion + 1} sur ${bigFiveQuestions.length}
+                    </div>
+                    
+                    <div class="question-text">${question.text}</div>
+                    
+                    <div class="answers-grid" id="bf-answers-container">
+                        ${question.answers.map((answer, index) => `
+                            <div class="answer-option" id="bf-answer-${index}">
+                                <div style="font-size: 16px; font-weight: 500; color: var(--gray-900); flex: 1;">${answer.text}</div>
+                                <div class="rating-controls">
+                                    <div class="rating-btn btn-1" onclick="setBigFiveRating(${index}, 1)">1</div>
+                                    <div class="rating-btn btn-2" onclick="setBigFiveRating(${index}, 2)">2</div>
+                                    <div class="rating-btn btn-3" onclick="setBigFiveRating(${index}, 3)">3</div>
+                                    <div class="rating-btn btn-4" onclick="setBigFiveRating(${index}, 4)">4</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="error-message" id="bf-question-error">
+                        Tu dois utiliser chaque note une seule fois (1, 2, 3, 4) !
+                    </div>
+
+                    <div class="navigation">
+                        <button class="btn btn-secondary" onclick="previousBigFiveQuestion()" ${currentQuestion === 0 ? 'disabled' : ''}>← Précédent</button>
+                        <button class="btn btn-primary" onclick="nextBigFiveQuestion()">
+                            ${currentQuestion === bigFiveQuestions.length - 1 ? 'Terminer le test' : 'Suivant →'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Restaurer les réponses si on revient en arrière
+            if (userAnswers[currentQuestion]) {
+                userAnswers[currentQuestion].forEach((rating, answerIndex) => {
+                    if (rating > 0) {
+                        updateBigFiveAnswerDisplay(answerIndex, rating);
+                    }
+                });
+            }
+        }
+
+        function setBigFiveRating(answerIndex, rating) {
+            if (!userAnswers[currentQuestion]) {
+                userAnswers[currentQuestion] = [0, 0, 0, 0];
+            }
+            
+            // Supprimer cette note des autres réponses
+            for (let i = 0; i < 4; i++) {
+                if (userAnswers[currentQuestion][i] === rating && i !== answerIndex) {
+                    userAnswers[currentQuestion][i] = 0;
+                    updateBigFiveAnswerDisplay(i, 0);
+                }
+            }
+            
+            userAnswers[currentQuestion][answerIndex] = rating;
+            updateBigFiveAnswerDisplay(answerIndex, rating);
+            document.getElementById('bf-question-error').style.display = 'none';
+        }
+
+        function updateBigFiveAnswerDisplay(answerIndex, rating) {
+            const answerDiv = document.getElementById(`bf-answer-${answerIndex}`);
+            const buttons = answerDiv.querySelectorAll('.rating-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            answerDiv.classList.remove('selected');
+            
+            if (rating > 0) {
+                buttons[rating - 1].classList.add('selected');
+                answerDiv.classList.add('selected');
+            }
+        }
+
+        function nextBigFiveQuestion() {
+            if (!userAnswers[currentQuestion] || !isValidRating(userAnswers[currentQuestion])) {
+                document.getElementById('bf-question-error').style.display = 'block';
+                return;
+            }
+            
+            if (currentQuestion === bigFiveQuestions.length - 1) {
+                finishBigFiveTest();
+            } else {
+                currentQuestion++;
+                showBigFiveQuestion();
+            }
+        }
+
+        function previousBigFiveQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showBigFiveQuestion();
+            }
+        }
+
+        function finishBigFiveTest() {
+            const endTime = Date.now();
+            const duration = Math.round((endTime - startTime) / 1000);
+            
+            document.getElementById('bigfive-page').innerHTML = `
+                <div class="completion-card">
+                    <div style="width: 80px; height: 80px; background: rgba(255, 255, 255, 0.2); border-radius: 40px; margin: 0 auto 32px; display: flex; align-items: center; justify-content: center; font-size: 32px;">✓</div>
+                    <h2 style="font-size: 32px; font-weight: 700; margin-bottom: 16px;">Félicitations !</h2>
+                    <p style="font-size: 18px; opacity: 0.9; margin-bottom: 12px;">Tu as terminé le test de personnalité avec succès.</p>
+                    <p style="font-size: 18px; opacity: 0.9; margin-bottom: 12px;"><strong>Tes réponses ont été enregistrées et seront analysées.</strong></p>
+                    <p style="font-size: 18px; opacity: 0.9; margin-bottom: 24px;">Tu recevras tes résultats personnalisés très bientôt !</p>
+                    <div style="margin-top: 32px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-turquoise" onclick="startRiasec()">📊 Test d'orientation</button>
+                        <button class="btn btn-home" onclick="goHome()">🏠 Retour à l'accueil</button>
+                    </div>
+                </div>
+            `;
+            
+            console.log('Test Big Five terminé:', {
+                userInfo,
+                duration,
+                answers: userAnswers
+            });
+        }
+
+        // FONCTIONS RIASEC
+        function startRiasec() {
+            currentTest = 'riasec';
+            showPage('riasec-page');
+            
+            document.getElementById('riasec-page').innerHTML = `
+                <div class="card">
+                    <div style="text-align: center; margin-bottom: 48px;">
+                        <h1 style="font-size: 42px; font-weight: 700; background: linear-gradient(135deg, var(--primary-turquoise), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px;">Test d'Orientation</h1>
+                        <div style="color: var(--gray-600); font-size: 20px; margin-bottom: 32px;">Découvre tes centres d'intérêts professionnels avec le modèle RIASEC</div>
+                    </div>
+                    
+                    <div class="alert turquoise">
+                        <div style="font-weight: 600; font-size: 18px; color: var(--gray-900); margin-bottom: 16px;">À lire attentivement avant de commencer</div>
+                        <p><strong>Ce test va t'aider à découvrir tes centres d'intérêts professionnels !</strong> Pour chaque question, tu vas voir 3 activités différentes.</p>
+                        <br>
+                        <p><strong>Tu dois choisir :</strong></p>
+                        <ul style="margin: 16px 0; padding-left: 20px;">
+                            <li><strong>L'activité qui t'attire LE PLUS</strong> → Bouton + (vert)</li>
+                            <li><strong>L'activité qui t'attire LE MOINS</strong> → Bouton - (rouge)</li>
+                        </ul>
+                        <p><strong>Il n'y a pas de bonnes ou mauvaises réponses</strong>, réponds selon tes vraies préférences !</p>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 32px;">
+                        <h2 style="color: var(--gray-900); margin-bottom: 24px; font-size: 24px;">Tes informations</h2>
+                        <div style="max-width: 400px; margin: 0 auto;">
+                            <div class="form-group">
+                                <label for="riasec-firstName" class="form-label">Prénom <span style="color: var(--red);">*</span></label>
+                                <input type="text" id="riasec-firstName" class="form-input" placeholder="Ton prénom" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="riasec-lastName" class="form-label">Nom <span style="color: var(--red);">*</span></label>
+                                <input type="text" id="riasec-lastName" class="form-input" placeholder="Ton nom de famille" required>
+                            </div>
+                            <div class="error-message" id="riasec-info-error">
+                                Merci de remplir ton prénom et ton nom !
+                            </div>
+                            <div style="display: flex; gap: 16px; justify-content: center; margin-top: 24px;">
+                                <button class="btn btn-home" onclick="goHome()">← Retour</button>
+                                <button class="btn btn-turquoise" onclick="startRiasecTest()">Commencer le test</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function startRiasecTest() {
+            const firstName = document.getElementById('riasec-firstName').value.trim();
+            const lastName = document.getElementById('riasec-lastName').value.trim();
+            
+            if (!firstName || !lastName) {
+                document.getElementById('riasec-info-error').style.display = 'block';
+                return;
+            }
+            
+            userInfo = { firstName, lastName };
+            startTime = Date.now();
+            currentQuestion = 0;
+            userAnswers = new Array(riasecQuestions.length).fill(null);
+            
+            showRiasecQuestion();
+        }
+
+        function showRiasecQuestion() {
+            const question = riasecQuestions[currentQuestion];
+            
+            document.getElementById('riasec-page').innerHTML = `
+                <div class="card">
+                    <div style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--primary-turquoise), var(--accent)); color: white; padding: 12px 24px; border-radius: 25px; font-weight: 600; font-size: 14px; margin-bottom: 24px;">
+                        Question ${currentQuestion + 1} sur ${riasecQuestions.length}
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar turquoise" style="width: ${(currentQuestion / riasecQuestions.length) * 100}%"></div>
+                    </div>
+                    
+                    <div style="text-align: center; color: var(--gray-600); font-weight: 500; margin-bottom: 24px;">
+                        Question ${currentQuestion + 1} sur ${riasecQuestions.length}
+                    </div>
+                    
+                    <div class="question-text">${question.text}</div>
+                    
+                    <div class="activities-grid" id="riasec-activities-container">
+                        ${question.activities.map((activity, index) => `
+                            <div class="activity-option" id="riasec-activity-${index}">
+                                <div style="font-size: 16px; font-weight: 500; color: var(--gray-900); flex: 1;">${activity.text}</div>
+                                <div class="rating-controls">
+                                    <div class="rating-btn plus-btn" onclick="setRiasecRating(${index}, 'plus')" style="width: 50px; height: 50px; font-size: 18px;">+</div>
+                                    <div class="rating-btn minus-btn" onclick="setRiasecRating(${index}, 'minus')" style="width: 50px; height: 50px; font-size: 18px;">-</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="error-message" id="riasec-question-error">
+                        Tu dois choisir une activité qui t'attire LE PLUS (+) et une qui t'attire LE MOINS (-) !
+                    </div>
+
+                    <div class="navigation">
+                        <button class="btn btn-secondary" onclick="previousRiasecQuestion()" ${currentQuestion === 0 ? 'disabled' : ''}>← Précédent</button>
+                        <button class="btn btn-turquoise" onclick="nextRiasecQuestion()">
+                            ${currentQuestion === riasecQuestions.length - 1 ? 'Terminer le test' : 'Suivant →'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Restaurer les réponses si on revient en arrière
+            if (userAnswers[currentQuestion]) {
+                updateRiasecQuestionDisplay();
+            }
+        }
+
+        function setRiasecRating(activityIndex, type) {
+            if (!userAnswers[currentQuestion]) {
+                userAnswers[currentQuestion] = { plus: -1, minus: -1 };
+            }
+            
+            // Réinitialiser si on clique sur le même bouton
+            if (userAnswers[currentQuestion][type] === activityIndex) {
+                userAnswers[currentQuestion][type] = -1;
+                updateRiasecQuestionDisplay();
+                return;
+            }
+            
+            // Supprimer l'ancien choix du même type
+            userAnswers[currentQuestion][type] = activityIndex;
+            
+            // Si on clique sur + mais qu'il y avait déjà un - sur cette activité
+            const otherType = type === 'plus' ? 'minus' : 'plus';
+            if (userAnswers[currentQuestion][otherType] === activityIndex) {
+                userAnswers[currentQuestion][otherType] = -1;
+            }
+            
+            updateRiasecQuestionDisplay();
+            document.getElementById('riasec-question-error').style.display = 'none';
+        }
+
+        function updateRiasecQuestionDisplay() {
+            const currentAnswers = userAnswers[currentQuestion];
+            if (!currentAnswers) return;
+            
+            for (let i = 0; i < 3; i++) {
+                const activityDiv = document.getElementById(`riasec-activity-${i}`);
+                const plusBtn = activityDiv.querySelector('.plus-btn');
+                const minusBtn = activityDiv.querySelector('.minus-btn');
+                
+                // Réinitialiser
+                activityDiv.className = 'activity-option';
+                plusBtn.classList.remove('selected');
+                minusBtn.classList.remove('selected');
+                
+                // Appliquer les sélections
+                if (currentAnswers.plus === i) {
+                    activityDiv.classList.add('selected-plus');
+                    plusBtn.classList.add('selected');
+                }
+                if (currentAnswers.minus === i) {
+                    activityDiv.classList.add('selected-minus');
+                    minusBtn.classList.add('selected');
+                }
+            }
+        }
+
+        function nextRiasecQuestion() {
+            if (!userAnswers[currentQuestion] || 
+                userAnswers[currentQuestion].plus === -1 || 
+                userAnswers[currentQuestion].minus === -1) {
+                document.getElementById('riasec-question-error').style.display = 'block';
+                return;
+            }
+            
+            if (currentQuestion === riasecQuestions.length - 1) {
+                finishRiasecTest();
+            } else {
+                currentQuestion++;
+                showRiasecQuestion();
+            }
+        }
+
+        function previousRiasecQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showRiasecQuestion();
+            }
+        }
+
+        function finishRiasecTest() {
+            const endTime = Date.now();
+            const duration = Math.round((endTime - startTime) / 1000);
+            
+            document.getElementById('riasec-page').innerHTML = `
+                <div class="completion-card turquoise">
+                    <div style="width: 80px; height: 80px; background: rgba(255, 255, 255, 0.2); border-radius: 40px; margin: 0 auto 32px; display: flex; align-items: center; justify-content: center; font-size: 32px;">✓</div>
+                    <h2 style="font-size: 32px; font-weight: 700; margin-bottom: 16px;">Excellent !</h2>
+                    <p style="font-size: 18px; opacity: 0.9; margin-bottom: 12px;">Tu as terminé le test d'orientation avec succès.</p>
+                    <p style="font-size: 18px; opacity: 0.9; margin-bottom: 12px;"><strong>Tes résultats ont été enregistrés et seront analysés.</strong></p>
+                    <p style="font-size: 18px; opacity: 0.9; margin-bottom: 24px;">Tu recevras ton profil d'orientation personnalisé très bientôt !</p>
+                    <div style="margin-top: 32px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="startBigFive()">🧠 Test de personnalité</button>
+                        <button class="btn btn-home" onclick="goHome()">🏠 Retour à l'accueil</button>
+                    </div>
+                </div>
+            `;
+            
+            console.log('Test RIASEC terminé:', {
+                userInfo,
+                duration,
+                answers: userAnswers
+            });
+        }
+
+        // FONCTIONS UTILITAIRES
+        function isValidRating(ratings) {
+            const sortedRatings = [...ratings].sort();
+            return JSON.stringify(sortedRatings) === JSON.stringify([1, 2, 3, 4]);
+        }
+
+        // DONNÉES DES QUESTIONS
+        const bigFiveQuestions = [
+            {
+                part: 1,
+                text: "Je suis une personne...",
+                answers: [
+                    { text: "sympathique et pleine d'énergie", factor: "sociabilite" },
+                    { text: "créative et imaginative", factor: "ouverture" },
+                    { text: "attentionnée et bienveillante", factor: "conscience" },
+                    { text: "équilibrée et stable", factor: "equilibre" }
+                ]
+            },
+            {
+                part: 1,
+                text: "J'aime les gens...",
+                answers: [
+                    { text: "pleins d'humour et un peu excentriques", factor: "ouverture" },
+                    { text: "pondérés qui ne s'énervent pas facilement", factor: "equilibre" },
+                    { text: "disciplinés qui persévèrent jusqu'à réussir", factor: "meticulosite" },
+                    { text: "attentionnés qui s'intéressent vraiment aux autres", factor: "conscience" }
+                ]
+            },
+            {
+                part: 1,
+                text: "On peut me reprocher...",
+                answers: [
+                    { text: "d'être imperturbable, de ne pas dévoiler mes sentiments", factor: "equilibre" },
+                    { text: "d'être un peu rebelle, de vouloir changer les choses", factor: "ouverture" },
+                    { text: "de toujours bouger, d'avoir besoin de voir du monde", factor: "sociabilite" },
+                    { text: "de trop vouloir planifier les choses", factor: "meticulosite" }
+                ]
+            },
+            {
+                part: 1,
+                text: "Ce qui me caractérise le plus...",
+                answers: [
+                    { text: "le goût de la perfection", factor: "meticulosite" },
+                    { text: "le dynamisme et la gaieté", factor: "sociabilite" },
+                    { text: "la sérénité et la confiance en moi", factor: "equilibre" },
+                    { text: "l'humanisme et l'attention aux autres", factor: "conscience" }
+                ]
+            },
+            {
+                part: 1,
+                text: "En cours, je préfère...",
+                answers: [
+                    { text: "participer activement et échanger avec les autres", factor: "sociabilite" },
+                    { text: "aider et conseiller mes camarades", factor: "conscience" },
+                    { text: "réfléchir différemment et imaginer des solutions innovantes", factor: "ouverture" },
+                    { text: "suivre les règles et bien préparer mes devoirs", factor: "meticulosite" }
+                ]
+            },
+            {
+                part: 2,
+                text: "En général, je suis plutôt...",
+                answers: [
+                    { text: "joyeux(se) et amical(e)", factor: "sociabilite" },
+                    { text: "curieux(se), attiré(e) par ce qui sort de l'ordinaire", factor: "ouverture" },
+                    { text: "obstiné(e) et déterminé(e)", factor: "meticulosite" },
+                    { text: "chaleureux(se), celui/celle qui attire les confidences", factor: "conscience" }
+                ]
+            },
+            {
+                part: 2,
+                text: "En général, je suis plutôt...",
+                answers: [
+                    { text: "discipliné(e) et respectueux(se) des règles", factor: "meticulosite" },
+                    { text: "plein(e) d'entrain, toujours actif(ve)", factor: "sociabilite" },
+                    { text: "modéré(e), je ne m'emporte pas", factor: "equilibre" },
+                    { text: "attiré(e) par les autres cultures", factor: "ouverture" }
+                ]
+            },
+            {
+                part: 2,
+                text: "En général, je suis plutôt...",
+                answers: [
+                    { text: "capable de me détacher des conventions", factor: "ouverture" },
+                    { text: "paisible et d'humeur égale", factor: "equilibre" },
+                    { text: "à l'écoute des autres plus que de moi-même", factor: "conscience" },
+                    { text: "communicatif(ve) et enjoué(e)", factor: "sociabilite" }
+                ]
+            },
+            {
+                part: 2,
+                text: "En général, je suis plutôt...",
+                answers: [
+                    { text: "quelqu'un qui aime prévoir longtemps à l'avance", factor: "meticulosite" },
+                    { text: "dévoué(e) aux autres", factor: "conscience" },
+                    { text: "attiré(e) par l'originalité et la diversité", factor: "ouverture" },
+                    { text: "difficile à perturber, plutôt sûr(e) de moi", factor: "equilibre" }
+                ]
+            },
+            {
+                part: 2,
+                text: "En général, je suis plutôt...",
+                answers: [
+                    { text: "quelqu'un qui recherche l'harmonie", factor: "conscience" },
+                    { text: "organisé(e) dans mes affaires", factor: "meticulosite" },
+                    { text: "ouvert(e) aux nouvelles expériences", factor: "ouverture" },
+                    { text: "sociable et extraverti(e)", factor: "sociabilite" }
+                ]
+            },
+            {
+                part: 3,
+                text: "Je suis plutôt disposé(e) à...",
+                answers: [
+                    { text: "développer de nouvelles relations", factor: "sociabilite" },
+                    { text: "respecter les délais", factor: "meticulosite" },
+                    { text: "gérer mon stress", factor: "equilibre" },
+                    { text: "m'engager et aider les autres", factor: "conscience" }
+                ]
+            },
+            {
+                part: 3,
+                text: "Je suis plutôt disposé(e) à...",
+                answers: [
+                    { text: "réfléchir à de nouvelles alternatives", factor: "ouverture" },
+                    { text: "supporter la pression", factor: "equilibre" },
+                    { text: "vérifier et valider des informations", factor: "meticulosite" },
+                    { text: "réconforter et encourager", factor: "conscience" }
+                ]
+            },
+            {
+                part: 3,
+                text: "Je suis plutôt disposé(e) à...",
+                answers: [
+                    { text: "affronter les critiques et l'adversité", factor: "equilibre" },
+                    { text: "écouter et soutenir les gens", factor: "conscience" },
+                    { text: "découvrir et étudier d'autres cultures", factor: "ouverture" },
+                    { text: "animer un groupe, organiser une sortie", factor: "sociabilite" }
+                ]
+            },
+            {
+                part: 3,
+                text: "Je suis plutôt disposé(e) à...",
+                answers: [
+                    { text: "établir des règles et les suivre", factor: "meticulosite" },
+                    { text: "rechercher l'action et les sensations fortes", factor: "sociabilite" },
+                    { text: "donner sans rien attendre en retour", factor: "conscience" },
+                    { text: "remettre en cause des idées préconçues", factor: "ouverture" }
+                ]
+            },
+            {
+                part: 3,
+                text: "Je suis plutôt disposé(e) à...",
+                answers: [
+                    { text: "prendre des initiatives", factor: "sociabilite" },
+                    { text: "être méthodique dans mon travail", factor: "meticulosite" },
+                    { text: "rester calme dans les situations difficiles", factor: "equilibre" },
+                    { text: "explorer de nouveaux domaines", factor: "ouverture" }
+                ]
+            }
+        ];
+
+        const riasecQuestions = [
+            {
+                text: "J'aimerais...",
+                activities: [
+                    { text: "Illustrer des livres pour enfants", type: "A" },
+                    { text: "Résoudre un problème", type: "I" },
+                    { text: "Me lancer dans un projet manuel", type: "R" }
+                ]
+            },
+            {
+                text: "J'aimerais...",
+                activities: [
+                    { text: "Repeindre ma chambre", type: "R" },
+                    { text: "Relever un challenge", type: "E" },
+                    { text: "Garder des enfants", type: "S" }
+                ]
+            },
+            {
+                text: "J'aimerais...",
+                activities: [
+                    { text: "Créer des posters", type: "A" },
+                    { text: "Résoudre des énigmes", type: "I" },
+                    { text: "Rejoindre une association", type: "S" }
+                ]
+            },
+            {
+                text: "J'aimerais...",
+                activities: [
+                    { text: "Faire des recherches sur un sujet", type: "I" },
+                    { text: "Organiser un anniversaire", type: "S" },
+                    { text: "Écrire une chanson", type: "A" }
+                ]
+            },
+            {
+                text: "J'aimerais...",
+                activities: [
+                    { text: "Faire du jardinage", type: "R" },
+                    { text: "Lire un roman policier", type: "I" },
+                    { text: "Organiser mes activités pour le weekend", type: "C" }
+                ]
+            }
+            // J'ai mis seulement 5 questions pour l'exemple, tu peux ajouter les 35 autres
+        ];
+    </script>
+</body>
+</html>
